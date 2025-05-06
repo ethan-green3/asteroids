@@ -23,6 +23,7 @@ def main():
     Shot.containers = (updatable, drawable, shots)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    timer = 0
     asteroid_field = AsteroidField()
 
     dt = 0
@@ -31,7 +32,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-
         updatable.update(dt)
         for obj in asteroids:
             if obj.check_collision(player):
@@ -46,6 +46,7 @@ def main():
 
         # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
+        timer -= dt
 
 
 if __name__ == "__main__":

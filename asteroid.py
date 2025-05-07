@@ -1,14 +1,38 @@
 from circleshape import *
 import pygame
 import random
+import math
 from constants import *
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x,y,radius)
+        self.points = self._generate_lumpy_points()
 
+    def _generate_lumpy_points(self):
+        """Generate points for a lumpy asteroid shape."""
+        points = []
+        num_points = random.randint(7, 12)  # Number of vertices
+        
+        for i in range(num_points):
+            angle = 2 * math.pi * i / num_points
+            # Random variation in radius (between 70% and 110% of base radius)
+            variation = random.uniform(0.7, 1.2)
+            distance = self.radius * variation
+            # Calculate point position relative to center
+            x = distance * math.cos(angle)
+            y = distance * math.sin(angle)
+            points.append((x, y))
+            
+        return points
 
     def draw(self, screen):
-        pygame.draw.circle(screen, "white", self.position, self.radius, 2)
+        # Transform the points to screen coordinates
+        screen_points = []
+        for x, y in self.points:
+            screen_points.append((x + self.position.x, y + self.position.y))
+        
+        # Draw the lumpy asteroid
+        pygame.draw.polygon(screen, "white", screen_points, 2)
     
     def update(self, dt):
         self.position += self.velocity * dt

@@ -4,9 +4,13 @@ import random
 import math
 from constants import *
 class Asteroid(CircleShape):
+    
     def __init__(self, x, y, radius):
         super().__init__(x,y,radius)
         self.points = self._generate_lumpy_points()
+        self.colors = ["red", "blue" , "white", "green", "yellow"]
+        self.color_choice = random.randint(0,4)
+        
 
     def _generate_lumpy_points(self):
         """Generate points for a lumpy asteroid shape."""
@@ -32,7 +36,8 @@ class Asteroid(CircleShape):
             screen_points.append((x + self.position.x, y + self.position.y))
         
         # Draw the lumpy asteroid
-        pygame.draw.polygon(screen, "white", screen_points, 2)
+
+        pygame.draw.polygon(screen, self.colors[self.color_choice], screen_points, 4)
     
     def update(self, dt):
         self.position += self.velocity * dt
